@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --f1-red: #E8002D;
+    --f1-black: #0a0a0a;
+    --f1-white: #f5f5f5;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0a0a0a;
+    color: #f5f5f5;
+    font-family: 'Titillium Web', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #111111;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #E8002D;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(232, 0, 45, 0.3);
+    color: #f5f5f5;
+  }
+}
+
+@layer components {
+  /* F1-style red accent bar (used on cards, headings) */
+  .f1-accent-bar {
+    @apply relative pl-4 before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-f1-red before:rounded-full;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #1a1a1a 25%,
+      #2a2a2a 50%,
+      #1a1a1a 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Card base */
+  .f1-card {
+    @apply bg-f1-black-2 border border-f1-gray rounded-lg overflow-hidden transition-all duration-200;
+  }
+  .f1-card:hover {
+    @apply border-f1-gray-2;
+  }
+
+  /* Red glow button */
+  .btn-f1 {
+    @apply bg-f1-red hover:bg-f1-red-light text-white font-semibold px-5 py-2.5 rounded transition-all duration-150 text-sm tracking-wide;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply border border-f1-gray-2 hover:border-f1-red text-f1-white-2 hover:text-white px-5 py-2.5 rounded transition-all duration-150 text-sm tracking-wide;
+  }
+
+  /* Section heading */
+  .section-heading {
+    @apply font-display text-2xl font-bold uppercase tracking-widest text-white;
+  }
+
+  /* Pill badge */
+  .f1-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider;
+  }
+
+  /* Table row hover */
+  .f1-table-row {
+    @apply border-b border-f1-gray hover:bg-f1-black-3 transition-colors duration-100;
+  }
+
+  /* Divider */
+  .f1-divider {
+    @apply border-t border-f1-gray my-6;
+  }
+}
+
+@layer utilities {
+  .text-gradient-red {
+    background: linear-gradient(135deg, #E8002D, #FF6B6B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .glow-red {
+    box-shadow: 0 0 20px rgba(232, 0, 45, 0.15);
+  }
+}
