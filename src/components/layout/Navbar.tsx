@@ -24,7 +24,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group" onClick={() => setMobileNavOpen(false)}>
             <div className="w-7 h-7 bg-f1-red rounded flex items-center justify-center flex-shrink-0 group-hover:bg-f1-red-light transition-colors">
-              <span className="text-white font-display font-bold text-xs tracking-tight">F1</span>
+              <span className="text-white font-display font-bold text-xs tracking-tight">P F1</span>
             </div>
             <span className="font-display font-bold text-white text-lg uppercase tracking-widest">
               Pitwall
