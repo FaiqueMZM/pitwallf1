@@ -56,3 +56,11 @@ export function useAvailableSeasons() {
     dedupingInterval: 3_600_000, // 1 hour — seasons don't change often
   })
 }
+
+export function useDriverSeasons(driverId: string) {
+  return useSWR(
+    driverId ? `driver-seasons-${driverId}` : null,
+    () => jolpica.getDriverSeasons(driverId),
+    { revalidateOnFocus: false, dedupingInterval: 3_600_000 }
+  )
+}

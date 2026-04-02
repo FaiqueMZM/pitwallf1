@@ -103,3 +103,14 @@ export async function getAvailableSeasons(): Promise<number[]> {
     .map((s) => parseInt(s.season))
     .reverse()
 }
+
+// ─── Driver Seasons list ──────────────────────────────────────────────────────
+
+export async function getDriverSeasons(driverId: string): Promise<number[]> {
+  const { data } = await client.get(`/drivers/${driverId}/seasons.json`, {
+    params: { limit: 100 },
+  })
+  return (data.MRData.SeasonTable.Seasons as { season: string }[])
+    .map((s) => parseInt(s.season))
+    .reverse()
+}
