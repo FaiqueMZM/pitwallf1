@@ -7,6 +7,7 @@ import RaceDetailPage from '@/pages/RaceDetailPage'
 import StandingsPage from '@/pages/StandingsPage'
 import DriversPage from '@/pages/DriversPage'
 import DriverProfilePage from '@/pages/DriverProfilePage'
+import LivePage from '@/pages/LivePage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 
 export default function App() {
@@ -20,7 +21,7 @@ export default function App() {
         <Route path="standings/:year" element={<StandingsPage />} />
         <Route path="drivers" element={<DriversPage />} />
         <Route path="drivers/:driverId" element={<DriverProfilePage />} />
-        <Route path="live" element={<PlaceholderPage title="Live" />} />
+        <Route path="live" element={<LivePage />} />
         <Route path="*" element={<PlaceholderPage title="404 — Not Found" />} />
       </Route>
     </Routes>
