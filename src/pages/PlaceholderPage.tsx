@@ -1,5 +1,5 @@
 interface PlaceholderPageProps {
-  title: string
+  title: string;
 }
 
 export default function PlaceholderPage({ title }: PlaceholderPageProps) {
@@ -16,5 +16,5 @@ export default function PlaceholderPage({ title }: PlaceholderPageProps) {
       </p>
       <div className="mt-8 h-[2px] w-16 bg-f1-red rounded-full" />
     </div>
-  )
+  );
 }

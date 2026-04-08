@@ -1,14 +1,14 @@
-import { Routes, Route } from 'react-router-dom'
-import Layout from '@/components/layout/Layout'
+import { Routes, Route } from "react-router-dom";
+import Layout from "@/components/layout/Layout";
 
-import HomePage from '@/pages/HomePage'
-import RacesPage from '@/pages/RacesPage'
-import RaceDetailPage from '@/pages/RaceDetailPage'
-import StandingsPage from '@/pages/StandingsPage'
-import DriversPage from '@/pages/DriversPage'
-import DriverProfilePage from '@/pages/DriverProfilePage'
-import LivePage from '@/pages/LivePage'
-import PlaceholderPage from '@/pages/PlaceholderPage'
+import HomePage from "@/pages/HomePage";
+import RacesPage from "@/pages/RacesPage";
+import RaceDetailPage from "@/pages/RaceDetailPage";
+import StandingsPage from "@/pages/StandingsPage";
+import DriversPage from "@/pages/DriversPage";
+import DriverProfilePage from "@/pages/DriverProfilePage";
+import LivePage from "@/pages/LivePage";
+import PlaceholderPage from "@/pages/PlaceholderPage";
 
 export default function App() {
   return (
@@ -25,5 +25,5 @@ export default function App() {
         <Route path="*" element={<PlaceholderPage title="404 — Not Found" />} />
       </Route>
     </Routes>
-  )
+  );
 }

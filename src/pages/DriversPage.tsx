@@ -1,50 +1,53 @@
-import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
-import { useAllDrivers, useDriverStandings, useAvailableSeasons } from '@/hooks/useJolpica'
-import { PageHeader } from '@/components/ui/SectionHeader'
-import { Skeleton } from '@/components/ui/Skeleton'
-import { ErrorState } from '@/components/ui/ErrorState'
-import { getTeamColor, getNationalityFlag, cn } from '@/utils'
-import type { Driver, DriverStanding } from '@/types'
+import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
+import {
+  useAllDrivers,
+  useDriverStandings,
+  useAvailableSeasons,
+} from "@/hooks/useJolpica";
+import { PageHeader } from "@/components/ui/SectionHeader";
+import { Skeleton } from "@/components/ui/Skeleton";
+import { ErrorState } from "@/components/ui/ErrorState";
+import { getTeamColor, getNationalityFlag, cn } from "@/utils";
+import type { Driver, DriverStanding } from "@/types";
 
-const CURRENT_YEAR = new Date().getFullYear()
+const CURRENT_YEAR = new Date().getFullYear();
 
 export default function DriversPage() {
-  const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR)
-  const [search, setSearch] = useState('')
+  const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR);
+  const [search, setSearch] = useState("");
 
-  const { data: drivers, error, isLoading } = useAllDrivers(selectedYear)
-  const { data: standings } = useDriverStandings(selectedYear)
-  const { data: seasons } = useAvailableSeasons()
+  const { data: drivers, error, isLoading } = useAllDrivers(selectedYear);
+  const { data: standings } = useDriverStandings(selectedYear);
+  const { data: seasons } = useAvailableSeasons();
 
   // Map standings by driverId for quick lookup
   const standingsMap = useMemo(() => {
-    const map = new Map<string, DriverStanding>()
-    standings?.forEach((s) => map.set(s.Driver.driverId, s))
-    return map
-  }, [standings])
+    const map = new Map<string, DriverStanding>();
+    standings?.forEach((s) => map.set(s.Driver.driverId, s));
+    return map;
+  }, [standings]);
 
   const filtered = useMemo(() => {
-    if (!drivers) return []
-    const q = search.toLowerCase()
+    if (!drivers) return [];
+    const q = search.toLowerCase();
     return drivers.filter(
       (d) =>
-        (d.givenName ?? '').toLowerCase().includes(q) ||
-        (d.familyName ?? '').toLowerCase().includes(q) ||
-        (d.nationality ?? '').toLowerCase().includes(q) ||
-        (d.code ?? '').toLowerCase().includes(q)
-    )
-  }, [drivers, search])
+        (d.givenName ?? "").toLowerCase().includes(q) ||
+        (d.familyName ?? "").toLowerCase().includes(q) ||
+        (d.nationality ?? "").toLowerCase().includes(q) ||
+        (d.code ?? "").toLowerCase().includes(q),
+    );
+  }, [drivers, search]);
 
   return (
     <div className="animate-fade-in">
       <PageHeader
         title="Drivers"
-        subtitle={`${selectedYear} season — ${drivers?.length ?? '—'} drivers`}
+        subtitle={`${selectedYear} season — ${drivers?.length ?? "—"} drivers`}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
         {/* Controls row: search + year selector */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           {/* Search */}
@@ -61,7 +64,7 @@ export default function DriversPage() {
             />
             {search && (
               <button
-                onClick={() => setSearch('')}
+                onClick={() => setSearch("")}
                 className="absolute inset-y-0 right-3 flex items-center text-f1-gray-3 hover:text-white transition-colors"
               >
                 <XIcon />
@@ -79,10 +82,10 @@ export default function DriversPage() {
                 key={year}
                 onClick={() => setSelectedYear(year)}
                 className={cn(
-                  'px-3 py-1.5 rounded text-sm font-semibold font-mono transition-all duration-150',
+                  "px-3 py-1.5 rounded text-sm font-semibold font-mono transition-all duration-150",
                   selectedYear === year
-                    ? 'bg-f1-red text-white'
-                    : 'bg-f1-gray/40 text-f1-gray-4 hover:text-white hover:bg-f1-gray'
+                    ? "bg-f1-red text-white"
+                    : "bg-f1-gray/40 text-f1-gray-4 hover:text-white hover:bg-f1-gray",
                 )}
               >
                 {year}
@@ -90,13 +93,21 @@ export default function DriversPage() {
             ))}
             {(seasons ?? []).length > 8 && (
               <select
-                value={(seasons ?? []).slice(0, 8).includes(selectedYear) ? '' : selectedYear}
-                onChange={(e) => e.target.value && setSelectedYear(parseInt(e.target.value))}
+                value={
+                  (seasons ?? []).slice(0, 8).includes(selectedYear)
+                    ? ""
+                    : selectedYear
+                }
+                onChange={(e) =>
+                  e.target.value && setSelectedYear(parseInt(e.target.value))
+                }
                 className="bg-f1-gray/40 text-f1-gray-4 border border-f1-gray-2 rounded px-2 py-1.5 text-sm font-mono focus:outline-none focus:border-f1-red"
               >
                 <option value="">Older...</option>
                 {(seasons ?? []).slice(8).map((year) => (
-                  <option key={year} value={year}>{year}</option>
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
                 ))}
               </select>
             )}
@@ -109,7 +120,7 @@ export default function DriversPage() {
 
         {!isLoading && !error && filtered.length === 0 && (
           <div className="text-center py-16 text-f1-gray-4 text-sm">
-            No drivers found{search ? ` for "${search}"` : ''}.
+            No drivers found{search ? ` for "${search}"` : ""}.
           </div>
         )}
 
@@ -127,7 +138,7 @@ export default function DriversPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // ─── Driver Card ──────────────────────────────────────────────────────────────
@@ -137,14 +148,14 @@ function DriverCard({
   standing,
   year,
 }: {
-  driver: Driver
-  standing?: DriverStanding
-  year: number
+  driver: Driver;
+  standing?: DriverStanding;
+  year: number;
 }) {
-  const teamId = standing?.Constructors[0]?.constructorId ?? ''
-  const teamName = standing?.Constructors[0]?.name ?? 'Unknown team'
-  const teamColor = getTeamColor(teamId)
-  const pos = standing ? parseInt(standing.position) : null
+  const teamId = standing?.Constructors[0]?.constructorId ?? "";
+  const teamName = standing?.Constructors[0]?.name ?? "Unknown team";
+  const teamColor = getTeamColor(teamId);
+  const pos = standing ? parseInt(standing.position) : null;
 
   return (
     <Link
@@ -159,16 +170,24 @@ function DriverCard({
         <div className="flex items-start justify-between mb-4">
           <div>
             {pos !== null ? (
-              <span className={cn(
-                'font-display text-4xl font-bold leading-none',
-                pos === 1 ? 'text-yellow-400' :
-                pos === 2 ? 'text-zinc-300' :
-                pos === 3 ? 'text-orange-400' : 'text-f1-gray-2'
-              )}>
+              <span
+                className={cn(
+                  "font-display text-4xl font-bold leading-none",
+                  pos === 1
+                    ? "text-yellow-400"
+                    : pos === 2
+                      ? "text-zinc-300"
+                      : pos === 3
+                        ? "text-orange-400"
+                        : "text-f1-gray-2",
+                )}
+              >
                 P{pos}
               </span>
             ) : (
-              <span className="font-display text-4xl font-bold text-f1-gray-2 leading-none">—</span>
+              <span className="font-display text-4xl font-bold text-f1-gray-2 leading-none">
+                —
+              </span>
             )}
           </div>
           {driver.permanentNumber && (
@@ -196,7 +215,9 @@ function DriverCard({
             {driver.familyName}
           </p>
           {driver.code && (
-            <p className="font-mono text-xs text-f1-gray-3 mt-1 tracking-widest">{driver.code}</p>
+            <p className="font-mono text-xs text-f1-gray-3 mt-1 tracking-widest">
+              {driver.code}
+            </p>
           )}
         </div>
 
@@ -205,13 +226,14 @@ function DriverCard({
           <span className="text-f1-gray-4 text-xs truncate">{teamName}</span>
           {standing && (
             <span className="font-mono text-sm font-bold text-white flex-shrink-0 ml-2">
-              {standing.points} <span className="text-f1-gray-3 font-normal text-xs">pts</span>
+              {standing.points}{" "}
+              <span className="text-f1-gray-3 font-normal text-xs">pts</span>
             </span>
           )}
         </div>
       </div>
     </Link>
-  )
+  );
 }
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
@@ -240,23 +262,39 @@ function DriversGridSkeleton() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
 function SearchIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="text-f1-gray-3">
-      <path d="M10 6.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zM13 13l-3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      className="text-f1-gray-3"
+    >
+      <path
+        d="M10 6.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zM13 13l-3-3"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
-  )
+  );
 }
 
 function XIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M3 3l8 8M11 3L3 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M3 3l8 8M11 3L3 11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
-  )
+  );
 }

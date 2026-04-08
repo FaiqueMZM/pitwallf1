@@ -1,32 +1,36 @@
-import { cn } from '@/utils'
+import { cn } from "@/utils";
 
 interface SectionHeaderProps {
-  title: string
-  subtitle?: string
-  action?: React.ReactNode
-  className?: string
-  accent?: boolean
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+  className?: string;
+  accent?: boolean;
 }
 
-export function SectionHeader({ title, subtitle, action, className, accent = true }: SectionHeaderProps) {
+export function SectionHeader({
+  title,
+  subtitle,
+  action,
+  className,
+  accent = true,
+}: SectionHeaderProps) {
   return (
-    <div className={cn('flex items-end justify-between gap-4 mb-6', className)}>
-      <div className={cn(accent && 'f1-accent-bar')}>
+    <div className={cn("flex items-end justify-between gap-4 mb-6", className)}>
+      <div className={cn(accent && "f1-accent-bar")}>
         <h2 className="section-heading">{title}</h2>
-        {subtitle && (
-          <p className="text-f1-gray-4 text-sm mt-1">{subtitle}</p>
-        )}
+        {subtitle && <p className="text-f1-gray-4 text-sm mt-1">{subtitle}</p>}
       </div>
       {action && <div className="flex-shrink-0">{action}</div>}
     </div>
-  )
+  );
 }
 
 interface PageHeaderProps {
-  title: string
-  subtitle?: string
-  badge?: React.ReactNode
-  meta?: React.ReactNode
+  title: string;
+  subtitle?: string;
+  badge?: React.ReactNode;
+  meta?: React.ReactNode;
 }
 
 export function PageHeader({ title, subtitle, badge, meta }: PageHeaderProps) {
@@ -43,5 +47,5 @@ export function PageHeader({ title, subtitle, badge, meta }: PageHeaderProps) {
         {meta && <div className="mt-4">{meta}</div>}
       </div>
     </div>
-  )
+  );
 }

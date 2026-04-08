@@ -1,13 +1,11 @@
-import { cn } from '@/utils'
+import { cn } from "@/utils";
 
 interface SkeletonProps {
-  className?: string
+  className?: string;
 }
 
 export function Skeleton({ className }: SkeletonProps) {
-  return (
-    <div className={cn('skeleton rounded', className)} />
-  )
+  return <div className={cn("skeleton rounded", className)} />;
 }
 
 export function SkeletonCard() {
@@ -17,14 +15,17 @@ export function SkeletonCard() {
       <Skeleton className="h-6 w-2/3" />
       <Skeleton className="h-4 w-1/2" />
     </div>
-  )
+  );
 }
 
 export function SkeletonTable({ rows = 5 }: { rows?: number }) {
   return (
     <div className="space-y-px">
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="flex items-center gap-4 px-4 py-3 bg-f1-black-2">
+        <div
+          key={i}
+          className="flex items-center gap-4 px-4 py-3 bg-f1-black-2"
+        >
           <Skeleton className="h-4 w-6 flex-shrink-0" />
           <Skeleton className="h-4 w-8 flex-shrink-0" />
           <Skeleton className="h-4 flex-1" />
@@ -32,7 +33,7 @@ export function SkeletonTable({ rows = 5 }: { rows?: number }) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 export function SkeletonText({ lines = 3 }: { lines?: number }) {
@@ -41,9 +42,9 @@ export function SkeletonText({ lines = 3 }: { lines?: number }) {
       {Array.from({ length: lines }).map((_, i) => (
         <Skeleton
           key={i}
-          className={cn('h-4', i === lines - 1 ? 'w-2/3' : 'w-full')}
+          className={cn("h-4", i === lines - 1 ? "w-2/3" : "w-full")}
         />
       ))}
     </div>
-  )
+  );
 }
