@@ -101,3 +101,11 @@ export function useDriverSeasons(driverId: string) {
     { revalidateOnFocus: false, dedupingInterval: 3_600_000 },
   );
 }
+
+export function useLapTimes(year?: number, round?: number) {
+  return useSWR(
+    year && round ? `laps-${year}-${round}` : null,
+    () => jolpica.getLapTimes(year as number, round as number),
+    { revalidateOnFocus: false, dedupingInterval: 300_000 },
+  );
+}

@@ -66,13 +66,31 @@ export async function getQualifyingResults(
 export async function getLapTimes(
   year: number,
   round: number,
-  lap?: number,
 ): Promise<LapTime[]> {
-  const get = unwrap<LapTime[]>((d) => d.RaceTable.Races[0]?.Laps ?? []);
-  const url = lap
-    ? `/${year}/${round}/laps/${lap}.json`
-    : `/${year}/${round}/laps.json`;
-  return get(url, { limit: 100 });
+  const PAGE_SIZE = 100;
+
+  const first = await client.get(`/${year}/${round}/laps.json`, {
+    params: { limit: PAGE_SIZE, offset: 0 },
+  });
+  const total = parseInt(first.data.MRData.total, 10);
+  const firstLaps: LapTime[] = first.data.MRData.RaceTable.Races[0]?.Laps ?? [];
+
+  if (total <= PAGE_SIZE) return firstLaps;
+
+  const pageCount = Math.ceil(total / PAGE_SIZE);
+  const requests = Array.from({ length: pageCount - 1 }, (_, i) => {
+    const offset = (i + 1) * PAGE_SIZE;
+    return client
+      .get(`/${year}/${round}/laps.json`, {
+        params: { limit: PAGE_SIZE, offset },
+      })
+      .then((r) => r.data.MRData.RaceTable.Races[0]?.Laps ?? []);
+  });
+
+  const restPages = await Promise.all(requests);
+  return [...firstLaps, ...restPages.flat()].sort(
+    (a, b) => parseInt(a.number) - parseInt(b.number),
+  );
 }
 
 // ─── Standings ────────────────────────────────────────────────────────────────

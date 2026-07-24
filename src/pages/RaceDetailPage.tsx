@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useRaceResults, useQualifyingResults } from "@/hooks/useJolpica";
+import {
+  useRaceResults,
+  useQualifyingResults,
+  useLapTimes,
+} from "@/hooks/useJolpica";
 import { PageHeader } from "@/components/ui/SectionHeader";
 import { Badge, StatusBadge } from "@/components/ui/Badge";
 import { TeamDot } from "@/components/ui/TeamBar";
 import { Skeleton, SkeletonTable } from "@/components/ui/Skeleton";
 import { ErrorState } from "@/components/ui/ErrorState";
+import RaceLapChart from "@/components/RaceLapChart";
 import {
   formatRaceDate,
   getTeamColor,
@@ -16,7 +21,7 @@ import {
 import TrackViewer from "@/components/TrackViewer";
 import type { RaceResult, QualifyingResult } from "@/types";
 
-type Tab = "race" | "qualifying";
+type Tab = "race" | "qualifying" | "laps";
 
 export default function RaceDetailPage() {
   const { year, round } = useParams<{ year: string; round: string }>();
@@ -39,6 +44,11 @@ export default function RaceDetailPage() {
   const race = raceData ?? qualifyingData;
   const results = raceData?.Results ?? [];
   const qualResults = qualifyingData?.QualifyingResults ?? [];
+
+  const { data: lapTimes, isLoading: lapsLoading } = useLapTimes(
+    race ? parseInt(race.season) : undefined,
+    race ? parseInt(race.round) : undefined,
+  );
 
   return (
     <div className="animate-fade-in">
@@ -109,7 +119,7 @@ export default function RaceDetailPage() {
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 border-b border-f1-gray">
-          {(["race", "qualifying"] as Tab[]).map((tab) => (
+          {(["race", "qualifying", "laps"] as Tab[]).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -120,7 +130,11 @@ export default function RaceDetailPage() {
                   : "text-f1-gray-4 hover:text-white",
               )}
             >
-              {tab === "race" ? "Race Result" : "Qualifying"}
+              {tab === "race"
+                ? "Race Result"
+                : tab === "qualifying"
+                  ? "Qualifying"
+                  : "Lap Chart"}
               {activeTab === tab && (
                 <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-f1-red rounded-full" />
               )}
@@ -156,6 +170,14 @@ export default function RaceDetailPage() {
               </div>
             )}
           </>
+        )}
+
+        {activeTab === "laps" && (
+          <RaceLapChart
+            laps={lapTimes}
+            results={results}
+            isLoading={lapsLoading}
+          />
         )}
       </div>
     </div>
